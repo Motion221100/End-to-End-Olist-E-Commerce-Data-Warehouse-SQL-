@@ -108,7 +108,7 @@ SET GLOBAL VARIABLE local_infile = 1;
 - Run the scripts.
 
 ## Sample Queries
-### Customer Dimensions and KPIs
+### 1. Customer Dimensions and KPIs
 ```sql
 
 CREATE TABLE gold.dim_customer AS
@@ -172,4 +172,33 @@ GROUP BY
     cc.customer_state;
 
 ```
-### 
+### 2. Standardizing city names function and Updating city names
+```sql
+-- standardize the geo_city column
+DELIMITER //
+CREATE FUNCTION normalize_city_name(city VARCHAR(255))
+RETURNS VARCHAR(255) DETERMINISTIC
+BEGIN
+    SET city = LOWER(TRIM(city));
+    SET city = REPLACE(city, '...', '');
+    SET city = REPLACE(city, '*', '');
+    SET city = REPLACE(city, '´t', 't');
+    SET city = REPLACE(city, '4º', '');
+    SET city = REPLACE(city, '4o.', '');
+    -- Clean up multiple spaces (very rare but safe)
+    WHILE LOCATE('  ', city) > 0 DO
+        SET city = REPLACE(city, '  ', ' ');
+    END WHILE;
+    RETURN city;
+END //
+DELIMITER ;
+
+UPDATE silver.geo_geolocation
+SET geo_city = TRIM(normalize_city_name(geo_city));
+
+SELECT DISTINCT geo_city
+FROM silver.geo_geolocation
+WHERE geo_city REGEXP '[A-ZÀÁÂÃÄÇÉÊÈËÍÎÌÏÕÓÔÒÖÚÛÙÜÑ]'
+   OR geo_city != LOWER(geo_city)
+   OR geo_city REGEXP '[ãáâàäéêèëíîìïõóôòöúûùüçñ]';
+```
