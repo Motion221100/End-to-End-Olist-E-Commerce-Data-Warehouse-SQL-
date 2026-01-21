@@ -1,13 +1,13 @@
 -- assign customer_id as primary key
 ALTER TABLE silver.cust_customers
-ADD PRIMARY KEY (customer_id);
+ADD PRIMARY KEY (customer_id) ;
 
 -- assign seller_id as primary key
-ALTER TABLE selr_sellers
+ALTER TABLE silver.selr_sellers
 ADD PRIMARY KEY (seller_id);
 
 -- assign order_id as primary key and customer_id as foreign key.
-ALTER TABLE ord_orders
+ALTER TABLE silver.ord_orders
 ADD PRIMARY KEY (order_id),
 ADD CONSTRAINT fk_cust_id_1
 	FOREIGN KEY (customer_id)

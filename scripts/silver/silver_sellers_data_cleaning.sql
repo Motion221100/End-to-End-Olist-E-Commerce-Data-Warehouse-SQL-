@@ -10,9 +10,18 @@ DELIMITER //
 CREATE FUNCTION normalize_seller_city_name(city TEXT)
 RETURNS TEXT DETERMINISTIC
 BEGIN
+    SET city = LOWER(TRIM(city));-- search for seller_id duplicates
+SELECT seller_id
+FROM silver.selr_sellers
+GROUP BY seller_id
+HAVING COUNT(*) > 1;
+
+-- rectify seller city name errors
+DELIMITER //
+CREATE FUNCTION normalize_seller_city_name(city TEXT)
+RETURNS TEXT DETERMINISTIC
+BEGIN
     SET city = LOWER(TRIM(city));
-    
-    -- Remove/replace common Portuguese/Brazilian diacritics
     SET city = REPLACE(city, '4482255', 'N/A');
     SET city = REPLACE(city, 'angra dos reis rj', 'angra dos reis');
     SET city = REPLACE(city, 'ararangua', 'araranquara');
@@ -37,8 +46,6 @@ BEGIN
     SET city = REPLACE(city, 'sao paulop', 'sao paulo');
     SET city = REPLACE(city, 'sao pauo', 'sao paulo');
     SET city = REPLACE(city, '@', ' ');
-    -- Clean up multiple spaces (very rare but safe)
-        
     RETURN city;
 END //
 DELIMITER ;
@@ -49,5 +56,4 @@ SET seller_city = TRIM(normalize_seller_city_name(seller_city));
 -- search for blanks and null
 SELECT * 
 FROM silver.selr_sellers
-WHERE "" IN (seller_id, seller_zipcode_prefix, seller_city, seller_state) OR NULL IN (seller_id, seller_zipcode_prefix, seller_city, seller_state)
--- NO nulls and blanks found in the dataset
+WHERE "" IN (seller_id, seller_zipcode_prefix, seller_city, seller_state) OR NULL IN (seller_id, seller_zipcode_prefix, seller_city, seller_state);

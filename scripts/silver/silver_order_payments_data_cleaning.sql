@@ -6,8 +6,7 @@ GROUP BY payment_type;
 -- check for nulls and blanks
 SELECT *
 FROM silver.ord_order_payments
-WHERE
-    order_id IS NULL
+WHERE order_id IS NULL
  OR payment_sequential IS NULL
  OR payment_type IS NULL
  OR TRIM(payment_type) = ''
@@ -19,8 +18,7 @@ WHERE
  --
 UPDATE silver.ord_order_payments op
 JOIN (
-    SELECT 
-        oi.order_id,
+    SELECT oi.order_id,
         SUM(oi.price + oi.freight_value) AS total_order_items
     FROM silver.ord_order_items oi
     GROUP BY oi.order_id

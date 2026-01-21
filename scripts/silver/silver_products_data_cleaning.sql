@@ -10,10 +10,9 @@ SET
     product_width_cm = NULLIF(product_width_cm, 0)
 WHERE
     product_name_length = 0
- OR product__photos_qty = 0
- OR product_description_length = 0
- OR product_weight_g = 0
- OR product_length_cm = 0
- OR product_height_cm = 0
- OR product_width_cm = 0;
- 
+    OR product_photos_qty = 0
+    OR product_description_length = 0
+    OR product_weight_g = 0
+    OR product_length_cm = 0
+    OR product_height_cm = 0
+    OR product_width_cm = 0;

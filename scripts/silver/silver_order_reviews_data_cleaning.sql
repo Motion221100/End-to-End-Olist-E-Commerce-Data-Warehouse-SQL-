@@ -2,19 +2,18 @@
 SELECT review_score
 FROM silver.ord_order_reviews
 WHERE review_score IS NULL;
--- no nulls found.
 
 -- check if review answer date is greater than review creation date.
 SELECT *
 FROM (
-	SELECT *, CASE 
-	WHEN DATEDIFF(review_answer_timestamp, review_creation_date) >=0 OR
-		YEAR(TIMEDIFF(review_answer_timestamp, review_creation_date)) >=0 OR
+    SELECT *, CASE 
+    WHEN DATEDIFF(review_answer_timestamp, review_creation_date) >=0 OR
+        YEAR(TIMEDIFF(review_answer_timestamp, review_creation_date)) >=0 OR
         MONTH(TIMEDIFF(review_answer_timestamp, review_creation_date)) >=0 OR
         DAY(TIMEDIFF(review_answer_timestamp, review_creation_date)) >=0 THEN 'correct'
         ELSE 'incorrect'
-END AS date_interval
-FROM silver.ord_order_reviews
+    END AS date_interval
+    FROM silver.ord_order_reviews
 ) determine_table
 WHERE date_interval != 'correct';
 
@@ -30,7 +29,6 @@ SET
         THEN NULL
         ELSE review_creation_date
     END,
-
     review_answer_timestamp = CASE
         WHEN 0 IN (
             YEAR(review_answer_timestamp),
