@@ -1,6 +1,6 @@
 # Olise-E-Commerce-Data Warehouse Project
 
-End-to-end SQL data warehouse project implementing the medallion architecture data pipeline for e-commerce analytics using MySQL. The pipeline processes raw Brazilian e-commerce data through bronze, silver, and gold layers to create a comprehensive analytical data warehouse.
+End-to-end SQL data warehouse project implementing the medallion architecture(ETL pipeline) data pipeline for e-commerce analytics using MySQL. The pipeline processes raw Brazilian e-commerce data through bronze, silver, and gold layers to create a comprehensive analytical data warehouse.
 
 # Architecture
 ### Bronze Layer
