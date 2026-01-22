@@ -51,7 +51,8 @@ End-to-End-Olist-E-Commerce-Data-Warehouse-SQL/
 └── Deliverables/
     ├── dataset_uml.jpeg
     ├── dataset_uml.pdf
-    └── dataset_uml.drawio
+    ├── dataset_uml.drawio
+    └── integrate_uml.pdf	
 ```
 ## Database Schema
 ### Bronze Layer (Raw Tables)
